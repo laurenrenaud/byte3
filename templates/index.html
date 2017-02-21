@@ -85,19 +85,19 @@
 	    "data": {
 	      "values": [
 			{% for row in queries[0].results %}
-          		{"date": "{{row[0]}}", "count": {{row[1]}}},
+          		{"date": "{{row[0]}}", "hour": "{{row[1]}}", "screenStat": "{{row[2]}}"},
        		{% endfor %}
 	      ]
 	    },
 	    "mark": "bar",
 	    "encoding": {
 	      "x": {
-	      	"field": "date", "type": "nominal",
+	      	"field": "screenStat", "type": "nominal",
 		    "axis": {
-		        "title": "Date"
+		        "title": "ScreenStatus"
 		     }},
 	      "y": {
-	        "field": "count", "type": "quantitative",
+	        "field": "hour", "type": "quantitative",
 	        "axis": {
 	          "title": "Record Count"
 	        }

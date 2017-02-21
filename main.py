@@ -31,7 +31,7 @@ _PSWD = 'renaudCMU27'
 # the table where activities are logged
 _ACTIVITY = 'plugin_google_activity_recognition'
 # the table where locations are logged
-_LOCATIONS = 'locations'
+_TABLE = 'screen'
 # the distance that determins new locations
 _EPSILON = 1
 
@@ -64,36 +64,36 @@ def index():
         # this query collects information about the number
         # of log enteries for each day. 
         day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
-        query = "SELECT {0} as day_with_data, count(*) as records FROM {1} GROUP by day_with_data".format(day, _LOCATIONS)
+        query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as DAYTIME, (HOUR(FROM_UNIXTIME(timestamp/1000)) - 5) as HOUROFDAY, screen_status FROM screen;"
         
         rows = make_query(cursor, query)
         queries = [{"query": query, "results": rows}]
         
         # this query lets us collect information about 
         # locations that are visited so we can bin them. 
-        query = "SELECT double_latitude, double_longitude FROM {0} ".format(_LOCATIONS)
-        locations = make_query(cursor, query)
+        #query = "SELECT double_latitude, double_longitude FROM {0} ".format(_LOCATIONS)
+        #locations = make_query(cursor, query)
         #locations = make_and_print_query(cursor, query, "locatons")
-        bins = bin_locations(locations, _EPSILON)
-        for location in bins:
-            queries = queries + [{"query": query, "results": bins}]
+        #bins = bin_locations(locations, _EPSILON)
+        #for location in bins:
+        #    queries = queries + [{"query": query, "results": bins}]
             
         # now get locations organized by day and hour 
-        time_of_day = "FROM_UNIXTIME(timestamp/1000,'%H')"
-        day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
-        query = "SELECT {0} as day, {1} as time_of_day, double_latitude, double_longitude FROM {2} GROUP BY day, time_of_day".format(day, time_of_day, _LOCATIONS)
-        locations = make_query(cursor, query)
+        #time_of_day = "FROM_UNIXTIME(timestamp/1000,'%H')"
+        #day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
+        query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as DAYTIME, (HOUR(FROM_UNIXTIME(timestamp/1000)) - 5) as HOUROFDAY, screen_status FROM screen;"
+        #locations = make_query(cursor, query)
         
         # and get physical activity per day and hour
         # activity name and duration in seconds
-        day_and_time_of_day = "FROM_UNIXTIME(timestamp/100, '%Y-%m-%d %H')"
-        query = "SELECT {0} as day, {1} as time_of_day, activity_name FROM {2} GROUP BY day, activity_name, {3}".format(day, time_of_day, _ACTIVITY, day_and_time_of_day)
+        #day_and_time_of_day = "FROM_UNIXTIME(timestamp/100, '%Y-%m-%d %H')"
+        #query = "SELECT {0} as day, {1} as time_of_day, activity_name FROM {2} GROUP BY day, activity_name, {3}".format(day, time_of_day, _ACTIVITY, day_and_time_of_day)
             
-        activities = make_query(cursor, query)
+        #activities = make_query(cursor, query)
             
         # now we want to associate activities with locations. This will update the
         # bins list with activities.
-        group_activities_by_location(bins, locations, activities, _EPSILON)
+        #group_activities_by_location(bins, locations, activities, _EPSILON)
             
     else:
         queries = [{"query": 'Need to connect from Google Appspot', "results": []}]
