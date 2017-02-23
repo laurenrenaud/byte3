@@ -64,36 +64,11 @@ def index():
         # this query collects information about the number
         # of log enteries for each day. 
         day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
-        query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as DAYTIME, (HOUR(FROM_UNIXTIME(timestamp/1000)) - 5) as HOUROFDAY, screen_status FROM screen;"
+        query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as screen_time, (HOUR(CONVERT_TZ((FROM_UNIXTIME(timestamp/1000)), 'GMT', 'EST'))) as hour, screen_status FROM screen;"
         
         rows = make_query(cursor, query)
         queries = [{"query": query, "results": rows}]
         
-        # this query lets us collect information about 
-        # locations that are visited so we can bin them. 
-        #query = "SELECT double_latitude, double_longitude FROM {0} ".format(_LOCATIONS)
-        #locations = make_query(cursor, query)
-        #locations = make_and_print_query(cursor, query, "locatons")
-        #bins = bin_locations(locations, _EPSILON)
-        #for location in bins:
-        #    queries = queries + [{"query": query, "results": bins}]
-            
-        # now get locations organized by day and hour 
-        #time_of_day = "FROM_UNIXTIME(timestamp/1000,'%H')"
-        #day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
-        query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as DAYTIME, (HOUR(FROM_UNIXTIME(timestamp/1000)) - 5) as HOUROFDAY, screen_status FROM screen;"
-        #locations = make_query(cursor, query)
-        
-        # and get physical activity per day and hour
-        # activity name and duration in seconds
-        #day_and_time_of_day = "FROM_UNIXTIME(timestamp/100, '%Y-%m-%d %H')"
-        #query = "SELECT {0} as day, {1} as time_of_day, activity_name FROM {2} GROUP BY day, activity_name, {3}".format(day, time_of_day, _ACTIVITY, day_and_time_of_day)
-            
-        #activities = make_query(cursor, query)
-            
-        # now we want to associate activities with locations. This will update the
-        # bins list with activities.
-        #group_activities_by_location(bins, locations, activities, _EPSILON)
             
     else:
         queries = [{"query": 'Need to connect from Google Appspot', "results": []}]

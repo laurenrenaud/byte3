@@ -89,21 +89,25 @@
        		{% endfor %}
 	      ]
 	    },
-	    "mark": "bar",
+	    "mark": "point",
 	    "encoding": {
-	      "x": {
-	      	"field": "screenStat", "type": "nominal",
-		    "axis": {
-		        "title": "ScreenStatus"
-		     }},
-	      "y": {
-	        "field": "hour", "type": "quantitative",
-	        "axis": {
-	          "title": "Record Count"
-	        }
-	      }
-	    }
-	  };
+	    	"x": {
+	    		"bin": {"maxbins": 24},
+	    		"field": "hour",
+	    		"type": "quantitative"
+	    		},
+	    	"y": {
+	    		"bin": {"maxbins": 4},
+	    		"field": "screenStat",
+	    		"type": "quantitative"
+	    		},
+	    	"size": {
+	    		"aggregate": "count",
+	    		"field": "*", "type":
+	    		"quantitative"
+	    		}
+	    	}
+	    };
 	
 	  var embedSpec = {
 	    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
