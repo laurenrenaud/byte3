@@ -46,19 +46,28 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-	<h1>Accountability: About This Data Set</h1>
-        <p>Write a brief summary about the data set here</a></p>
+	<h1>Accountability: </h1>
+        <p>About This Data Set, Data sourcing and access</a></p>
       </div>
 
     
       <div class="page-header">
 	<h2>Where did this data come from?</h2>
-	<p>fill in</p>
+	<p>The data was collected from my phone's sensors, using the AWARE framework.</p>
+	<p>My phone indicated the sensors were syncing often, but when I would check the database, the
+	data showing up was inconsistent. If I looked at the last date of something (and converted it from a
+	UNIX timestamp into a date) sometimes they seemed to be recent times and sometimes not. I thought that
+	they'd all be syncing or not syncing so that maybe that data hadn't shown up yet, but I now realized
+	that some sensors were correctly syncing to the database and some were not.</p>
+	<p>I also tried downloading my location history from Google Timeline but it is is a very complex, layered
+	JSON and is my entire history. I could not figure out an easy way to filter it to limit to recent locations
+	only.</p>
+	<p>The data was sourced from sensors in my phone, but not all data collected was able to be analyzed.</p>
       </div>
       
       <div class="page-header">
 	<h2>Who has access to it?</h2>
-	<p>fill in</p>
+	<p>It is in a database that only I can access.</p>
       </div>
 
 

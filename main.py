@@ -54,20 +54,20 @@ def index():
         
         logging.info("making queries")
         
-        # some sample queries that will write examples of the sort of
-        # data we have collected to the log so you can get a sense of things
-        make_and_print_query(cursor, 'SHOW TABLES', 'Show the names of all tables')
-        make_and_print_query(cursor, "SELECT * FROM plugin_google_activity_recognition WHERE LIMIT 10 ", 'Example contents of plugin_google_activity_recognition')
-        make_and_print_query(cursor, "SELECT * FROM locations  LIMIT 10", 'Example contents of locations')
-        
-        
-        # this query collects information about the number
-        # of log enteries for each day. 
-        day = "FROM_UNIXTIME(timestamp/1000,'%Y-%m-%d')"
         query = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as screen_time, (HOUR(CONVERT_TZ((FROM_UNIXTIME(timestamp/1000)), 'GMT', 'EST'))) as hour, screen_status FROM screen;"
         
         rows = make_query(cursor, query)
         queries = [{"query": query, "results": rows}]
+        
+        ## tried to get it to work with two queries,
+        ## but couldn't figure out how to call one of them but not both of them
+        #rows_screen =  = make_query(cursor, query_screen)
+        #query_screen = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as screen_time, (HOUR(CONVERT_TZ((FROM_UNIXTIME(timestamp/1000)), 'GMT', 'EST'))) as hour, screen_status FROM screen;"
+        #rows_charging =  = make_query(cursor, query_charging)
+        #query_charging = "SELECT CONVERT_TZ(FROM_UNIXTIME(timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as start_charge, CONVERT_TZ(FROM_UNIXTIME(double_end_timestamp/1000, '%Y-%m-%d %H:%i'), 'GMT', 'EST') as end_charge, (HOUR(CONVERT_TZ((FROM_UNIXTIME(timestamp/1000)), 'GMT', 'EST'))) as start_hour, round((double_end_timestamp - timestamp)/1000/60,0) as minutes_charging FROM battery_charges;"
+        #queries = [{"query_screen": query_screen, "results": rows_screen, 
+        #            "query_charging": query_charging, "results": rows_charging}]
+        
         
             
     else:

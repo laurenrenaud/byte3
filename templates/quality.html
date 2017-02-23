@@ -45,28 +45,43 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-	<h1>Quality: About This Data Set</h1>
-        <p>Write a brief summary about the quality of the data set here</a></p>
+	<h1>Quality: </h1>
+        <p>About This Data Set</a></p>
       </div>
 
     
       <div class="page-header">
 	<h2>Is the data complete?</h2>
-	<p>If not, what is missing and what concerns does it raise?
-	What is your evidence for this?</p>
-      </div>
+	<p>No, the data is not complete.</p>
+	<p>There are a few problems impacting the data's completeness.</p>
+	<ul style="list-style-type:circle">
+	    <li>First and most simply, twice my phone's battery depleted and the phone turned off, 
+	    which means data is missing from those times.</li>
+	    <li>Because the AWARE framework takes up a lot of storage space, and I'm not sure if my backup
+	    sync was always working properly, sometimes the data took up so much space that my phone stopped storing
+	    new data (not only for AWARE, but also for other apps). This may have lead to some missing data.</li>
+	    <li>When the storage was maxed out, I tried to sync the existing data and then delete the backup on the
+	    phone itself. I do not know if that may have deleted some data that was not backed up.</li>
+	    <li>The data from some sensors and plugins that were turned on (like Google Fused Locations) 
+	    never showed up in the database.</li>
+    </ul>
+    </div>
       
       <div class="page-header">
 	<h2>Is the data coherent?</h2>
-	<p>Does it make sense relative to itself? Does it match your
-	expectations? Are the distributions sensible? What is your
-	evidence for this?</p>
+	<p>The first thing that did not seem internally coherent was times -- they were off by a few hours from 
+	what would seem like logical times that I'd be using my phone. I realized that the times were stored in 
+	GMT by default and needed to be converted to EST, which then made more sense.</p>
+	<p>Other than that the data seems to be coherent.</p>
       </div>
 
       <div class="page-header">
 	<h2>Is the data correct?</h2>
-	<p>What aspects of this data can you verify? How did you do so? What did
-	you find?</p>
+	<p>I am mostly only able to verify the data through my own recollections and general behavior patterns.
+	The data seems to be showing phone use and charing around times that would make sense.</p>
+	<p>A few times during the data collection when I checked the database I would spot check the most recent
+	entry in a certain table. Aside from the missing data issues, those times and sensed data seemed
+	general correct against what had happened just before the sync.</p>
       </div>
 
     </div> <!-- /container -->

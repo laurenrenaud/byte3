@@ -60,21 +60,23 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
 	<h1>Data Pipeline Project Mobile Byte Example</h1>
-        <p>This is the Mobile Byte of the Data Pipeline class.</p>
+        <p>Screen and battery use over time</p>
       </div>
-
-   <h2>Query Results</h2>
-   <ul>
-   {% for item in queries %}
-   <li>Query: {{item.query}}<br>
-       {% for row in item.results %}
-          {{row}}<br>
-       {% endfor %}
-   </li>
-   {% endfor %}
-   </ul>
-   
-   <h2>Vega-lite Chart</h2>
+      
+  <div class="page-header">
+   <h2>Overall Question</h2>
+		
+		<p>How do I use my phone over the course of the day?</p>
+		<p>It feels like my phone use is woven into my day, and something like making sure my phone is
+		charged for a full day(and/or that I have a backup cable with me) is something that crosses my mind
+		daily as I'm getting ready for the day. Especially since I feel that in grad school my time, my 
+		schedule is quite variable, and I'm not always sure when I'll be back home.</p>
+		<p>I also rely on my phone all day for my schedule -- both preplanned and for messages and emails
+		which change my plans throughout the day.</p>
+		<p>How do these two competing things -- phone use (as measured by screen use) and battery use --
+		fluctuate throughout my days?</p>
+		
+   <h2>Screen Use by Hour of Day</h2>
    
    <!-- Example of Vega-lite graph -->
    <div id="vis"></div>
@@ -123,16 +125,109 @@
 	  });
   </script>
 
-   <div class="page-header">
-		<p> You should add information here, including some tables
-		and/or charts, telling the reader about the relationship
-		  between time and activity in your data.</p>
+   
+		<p>Screen status is captured by aware as a number.
+		The way the rows line up on the histogram are a bit off, so to read this chart, 
+		the values are as such:</p>
+		<ul style="list-style-type:none">
+		    <li>3.5 = unlocked</li>
+		    <li>2.5 = locked</li>
+		    <li>1.5 = on </li>
+		    <li>0.5 = off</li>
+		</ul> 
+		<p>The sensor is capturing when the screen status changes. So when the phone is
+		unlocked, which would likely mean I'm actively using it, increases over the course of the day,
+		peaks around 7:00pm (these hours are adjusted to EST), and I'm not actively using my phone
+		in the middle of the night.
+		I think he records where the phone is on (1.5) or locked (2.5) but not unlocked around 6 and 7am
+		is probably my alarm going off.</p>
+		<p>I'm slightly surprised that the peak usage seems to be around 7:00. It might just be that I'm
+		using my phone all day but with longer breaks, and around 7:00 is when I'm more likely to be
+		picking it up and putting it back down while I'm having dinner or something like that.</p>
+		
 	
 		<p> You should also add information here, including some tables
 		and/or charts, telling the reader about the relationship
 		between time and location in your data.</p>
 		
+		<h2>Battery Charging by Hour of Day</h2>
 		
+		<p>In general, I try to not charge my phone overnight, to avoid leaving it on the charger past
+		when it's already at 100%. Running AWARE drained the battery faster than I'm used to, and I've
+		also been using an older loaner phone while my usual phone is being repaired. This means there were
+		two different things happening modifying my usual behavior.</p>
+		
+		//<!--  ATTEMPTING TO ALSO RUN SECOND QUERY
+		//<div id="vis"></div>
+		//<script>
+		// Assign the specification to a local variable vlSpec.
+		//var vlSpec = {
+	    //"data": {
+	    //  "values": [
+		//	{% for row in queries[1].results_charging %}
+        //  		{"start_charge": "{{row[0]}}", "end_charge": "{{row[1]}}", "start_hour": "{{row[2]}}", "minutes_charging": "{{row[3]}}"},
+       	//	{% endfor %}
+	    //  ]
+	    //},
+	    //"mark": "point",
+	    //"encoding": {
+	    //	"x": {
+	    //		"bin": {"maxbins": 24},
+	    //		"field": "start_hour",
+	    //		"type": "quantitative"
+	    //		},
+	    //	"y": {
+	    //		"bin": {"maxbins": 6},
+	    //		"field": "screenStat",
+	    //		"type": "minutes_charging"
+	    //		},
+	    //	"size": {
+	    //		"aggregate": "count",
+	    //		"field": "*", "type":
+	    //		"quantitative"
+	    //		}
+	    //	}
+	    //};
+	    //var embedSpec = {
+	    //mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
+	    //spec: vlSpec
+	    // You can add more vega-embed configuration properties here.
+	    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
+	    //};
+	    
+	    // Embed the visualization in the container with id `vis`
+	    //vg.embed("#vis", embedSpec, function(error, result) {
+	    // Callback receiving the View instance and parsed Vega spec
+	    // result.view is the View, which resides under the '#vis' element
+	    //});
+	    //</script>
+	    //-->
+		
+		<img src="images/vega_scatter_mincharging.png" alt=“charging_scatterplot”>
+		
+		<p>As we can see on the scatterplot, most of the time I'm charging my phone for about 50 minutes
+		or less -- sometimes much less. Sometimes I charge my phone for 10 or fifteen minutes to try to get
+		it to last longer before I'm running out the door.</p>
+		<p>The longest charging period was initiated around midnight or 1:00am, which makes sense -- that's an
+		overnight charge. The 5 hour (300 minute) charge that initiated around 4:00am seems a little concerning --
+		I guess that was a late night.</p>
+		<p>There seem to be some clusters to the hour or so long charges, around midnight, 10am-12pm, 6:00pm,
+		and 10 or 11pm. These seem to make sense as to when I'd be around an outlet and my charging pattern of
+		avoiding overnight charges -- either these are at night, charing for an hour before I go to bed, or I 
+		only barely made it overnight and need to charge during my 10:30 class, or my battery made it through
+		the day but needs to be charged around dinner time.</p>
+		
+		<p><b><i>Note on visualizations and queries </i></b></p>
+		<p><i>I tried to get my queries to be feeding directly into the Vega Lite visualization for both queries,
+		but I couldn't figure out how to then in the index call one or the other. You can see my attempt to make
+		it work commented out in the <a href="https://github.com/laurenrenaud/byte3/blob/master/main.py">main.py</a>
+		and the <a href="https://github.com/laurenrenaud/byte3/blob/master/templates/index.html">index.html</a> code.
+		But I was able to get it to work for one or the other query at a time, so the data "cleaning" is happening
+		in the SQL query, and both Vega Lite visualizations were created using that pipeline, I just had to export
+		one as an image for now.</i></p>
+		
+		
+    
     </div> <!-- /page-header -->
    </div> <!-- /container -->
 
